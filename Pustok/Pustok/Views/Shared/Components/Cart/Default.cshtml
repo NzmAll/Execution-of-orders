@@ -56,5 +56,9 @@
         <div class="cart-summary">
             <p>Total Price: <span id="total-price">@Model.Total.ToString()</span></p>
         </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <button class="btn btn-primary">Checkout</button>
+        }
     </div>
 </div>
