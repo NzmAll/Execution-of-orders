@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Pustok.Contracts;
 using Pustok.Database;
 using Pustok.Services.Abstracts;
-using Pustok.Services.Concretes;
+using Pustok.ViewModels;
 
 namespace Pustok.Controllers;
 
@@ -23,11 +22,43 @@ public class AccountController : Controller
     public IActionResult Dashboard()
     {
         var user1 = _userService.CurrentUser;
-
-
-
         return View();
     }
+
+    public IActionResult Index()
+    {
+        var total = CalculateCartTotal();
+        var cartItems = GetCartItems();
+
+        var model = new CartViewModel
+        {
+            CartItems = cartItems,
+            Total = total
+        };
+
+        return View(model);
+    }
+
+
+    private List<CartItem> GetCartItems()
+    {
+        var cartItems = _cartService.GetCartItems();
+        return cartItems;
+    }
+
+
+    private decimal CalculateCartTotal()
+    {
+        var cartItems = GetCartItems();
+        decimal total = 0;
+        foreach (var item in cartItems)
+        {
+            total += item.Price * item.Quantity;
+        }
+        return total;
+    }
+
+
     public IActionResult Orders()
     {
         return View();
@@ -45,8 +76,6 @@ public class AccountController : Controller
 
     public IActionResult Logout()
     {
-        //logic
-
         return RedirectToAction("index", "home");
     }
 
