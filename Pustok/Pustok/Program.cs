@@ -4,8 +4,6 @@ using Pustok.Database;
 using Pustok.Services.Abstracts;
 using Pustok.Services.Concretes;
 
-namespace Pustok;
-
 public class Program
 {
     public static void Main(string[] args)
@@ -38,7 +36,7 @@ public class Program
 
         var app = builder.Build();
 
-        //Middleware (Chain of responsibily)
+        //Middleware (Chain of responsibility)
         app.UseStaticFiles();
 
         app.UseAuthentication();
@@ -48,4 +46,27 @@ public class Program
 
         app.Run();
     }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddAuthorization();
+        services.AddRazorPages();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+            endpoints.MapRazorPages();
+        });
+    }
+
 }

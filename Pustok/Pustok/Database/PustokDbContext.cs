@@ -8,6 +8,8 @@ namespace Pustok.Database;
 
 public class PustokDbContext : DbContext
 {
+    internal readonly object Orders;
+
     public PustokDbContext(DbContextOptions<PustokDbContext> options)
         : base(options) { }
 
@@ -260,4 +262,5 @@ public class PustokDbContext : DbContext
     public DbSet<Basket> Baskets { get; set; }
     public DbSet<BasketItem> BasketItems { get; set; }
     public DbSet<User> Users { get; set; }
+    
 }
