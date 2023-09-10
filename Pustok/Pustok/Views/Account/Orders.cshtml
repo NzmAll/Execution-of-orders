@@ -54,5 +54,47 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <h2>Sifarişlərim</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sifariş No</th>
+                    <th>Verilmə Tarixi</th>
+                    <th>Status</th>
+                    <th>Cəmi Məbləğ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>@order.OrderNumber</td>
+                        <td>@order.OrderDate.ToShortDateString()</td>
+                        <td>@order.OrderStatus</td>
+                        <td>@order.TotalAmount.ToString("C")</td>
+                        <td><a href="@Url.Action("ViewOrder", new { orderId = order.Id })">Məhsullara bax</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <button id="showProductsButton" class="btn btn-primary">Məhsullara bax</button>
+
+    <script>
+        $('#showProductsButton').click(function () {
+            var productsHtml = ""; 
+            var total = 0; 
+
+            $('.modal-body').html(productsHtml);
+            $('#totalPrice').text(total);
+
+            $('#productsModal').modal('show');
+        });
+
+    </script>
+
 </main>
 <!-- Main Content Area End Here -->
